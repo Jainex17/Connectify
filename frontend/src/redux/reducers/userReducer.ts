@@ -7,14 +7,14 @@ const initialState = {
 
 export const userReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(getusersRequest.type, (state, action) => {
+    .addCase(getusersRequest.type, (state) => {
       state.loading = true;
     })
     .addCase(getusersSuccess.type, (state, action: any) => {
       state.loading = false;
       state.users = action.payload;
     })
-    .addCase(getusersFail.type, (state, action) => {
+    .addCase(getusersFail.type, (state) => {
       state.loading = false;
     })
  
