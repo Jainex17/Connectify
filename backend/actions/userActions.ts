@@ -86,15 +86,22 @@ export const filterUsers = async (req: any, res: any) => {
     const skip = (page - 1) * limit;
     
     const query: { [key: string]: any } = {};
+    const andQuery: { [key: string]: any } = {};
 
-    if (domain != undefined) {
-      query.domain = { $regex: domain, $options: "i" };
-    } 
-    if (gender != undefined) {
-        query.gender = { $regex: new RegExp(`^${gender}$`, "i") };
+    if (domain) {
+      andQuery.domain = new RegExp(domain, "i");
     }
-     if (available) {
-        query.available = available === "true";
+  
+    if (gender) {
+      andQuery.gender = { $regex: new RegExp(`^${gender}$`, "i") };
+    }
+  
+    if (available !== undefined) {
+      query.available = available === "true";
+    }
+  
+    if (Object.keys(andQuery).length > 0) {
+      query.$and = [andQuery];
     }
 
     try {
