@@ -1,11 +1,10 @@
-import { MongoClient, ConnectOptions } from 'mongodb';
+import mongoose from 'mongoose';
 
 const dbConnect = async () => {
     try {
         const mongodbUrl = process.env.MONGODB_URL || ''; 
-        console.log(`Mongodb url: ${mongodbUrl}`);
         
-        await MongoClient.connect(mongodbUrl,
+        await mongoose.connect(mongodbUrl,
             // { 
             //     useNewUrlParser: true,
             //     useUnifiedTopology: true
