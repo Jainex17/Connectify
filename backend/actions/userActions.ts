@@ -88,15 +88,17 @@ export const filterUsers = async (req: any, res: any) => {
     const query: { [key: string]: any } = {};
     const andQuery: { [key: string]: any } = {};
 
-    if (domain) {
+    if (domain !== "undefined") {
       andQuery.domain = new RegExp(domain, "i");
     }
   
-    if (gender) {
+    if (gender !== "undefined") {
+        console.log("why");
+        
       andQuery.gender = { $regex: new RegExp(`^${gender}$`, "i") };
     }
   
-    if (available !== undefined) {
+    if (available !== "undefined") {
       query.available = available === "true";
     }
   
@@ -105,7 +107,7 @@ export const filterUsers = async (req: any, res: any) => {
     }
 
     try {
-        const users = await User.find({ $and: [query] })
+        const users = await User.find({ $or: [query] })
       .limit(limit)
       .skip(skip);
         res.status(200).json(users);
