@@ -63,3 +63,46 @@ export const deleteUser = async (req: any, res: any) => {
     }
 };
 
+export const searchUser = async (req: any, res: any) => {
+    const { name } = req.params;
+    try {
+        const users = await User.find({
+            $or: [
+            { first_name: { $regex: name, $options: "i" } },
+            { last_name: { $regex: name, $options: "i" } }
+            ]
+        });
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+};
+
+export const filterUsers = async (req: any, res: any) => {
+    const { domain, gender, available } = req.query;
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = 20;
+    const skip = (page - 1) * limit;
+    
+    const query: { [key: string]: any } = {};
+
+    if (domain != undefined) {
+      query.domain = { $regex: domain, $options: "i" };
+    } 
+    if (gender != undefined) {
+        query.gender = { $regex: new RegExp(`^${gender}$`, "i") };
+    }
+     if (available) {
+        query.available = available === "true";
+    }
+
+    try {
+        const users = await User.find({ $and: [query] })
+      .limit(limit)
+      .skip(skip);
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    };
+};
