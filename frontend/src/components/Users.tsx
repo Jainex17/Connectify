@@ -8,13 +8,30 @@ import {
   TextField,
 } from "@mui/material";
 import UserCard from "./Card";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
+import { getusers } from "../redux/actions/userAction";
 
 export const Users = () => {
-    const [page, setPage] = React.useState(1);
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value);
-      };
+
+  const { users } = useSelector((state: RootState) => state.user);
+  const dispatch: AppDispatch = useDispatch();
+  const [usersValues, setusersValues] = React.useState([] as any);
+
+  const [page, setPage] = React.useState(1);
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  useEffect(() => {
+    dispatch(getusers({ page }));
+  }, [page]);
+
+  useEffect(() => {
+    setusersValues(users);
+  }, [users]);
+
   return (
     <>
       <Container
@@ -50,10 +67,20 @@ export const Users = () => {
           columns={{ xs: 4, sm: 8, md: 12 }}
           sx={{ marginTop: 4, display: "flex", justifyContent: "center" }}
         >
-          {Array.from(Array(6)).map((_, index) => (
+          {usersValues && usersValues.map((user: any, index: number) => (
             <Grid item xs={3} sm={4} md={3} key={index}>
-              <UserCard />
+              <UserCard
+                id={user.id}
+                first_name={user.first_name}
+                last_name={user.last_name}
+                email={user.email}
+                avatar={user.avatar}
+                gender={user.gender}
+                domain={user.domain}
+                available={user.available}
+              />
             </Grid>
+
           ))}
         </Grid>
 
