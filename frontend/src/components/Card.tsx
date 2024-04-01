@@ -4,6 +4,9 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Avatar, Stack } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import { deleteuser } from "../redux/actions/userAction";
 
 interface userSchema {
   id: number;
@@ -17,6 +20,7 @@ interface userSchema {
 }
 
 export default function UserCard({
+  id,
   first_name,
   last_name,
   email,
@@ -25,6 +29,13 @@ export default function UserCard({
   domain,
   available,
 }: userSchema) {
+
+  const dispatch: AppDispatch = useDispatch();
+
+  const deletebtnhandler = () => {
+    dispatch(deleteuser(id));
+  }
+
   return (
     <Card sx={{ maxWidth: 245, padding: 1 }}>
       <Avatar
@@ -171,7 +182,7 @@ export default function UserCard({
         <Button variant="contained" size="small">
           Update
         </Button>
-        <Button variant="outlined" size="small" color="error">
+        <Button variant="outlined" size="small" color="error" onClick={deletebtnhandler}>
           Delete
         </Button>
       </CardActions>

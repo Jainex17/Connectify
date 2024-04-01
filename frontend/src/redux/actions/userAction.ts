@@ -4,6 +4,15 @@ import {
   getusersRequest,
     getusersSuccess,
     getusersFail,
+    deleteuserRequest,
+    deleteuserSuccess,
+    deleteuserFail,
+    searchuserRequest,
+    searchuserSuccess,
+    searchuserFail,
+    filterUserRequest,
+    filterUserSuccess,
+    filterUserFail,
 } from "./actionTypes";
 
 export const getusers = ({page = 1}: {page?: number}) => async (dispatch: any) => {
@@ -14,4 +23,34 @@ export const getusers = ({page = 1}: {page?: number}) => async (dispatch: any) =
     } catch (error) {
         dispatch({ type: getusersFail.type});
     }
-    };
+};
+
+export const deleteuser = (id: number) => async (dispatch: any) => {
+    dispatch({ type: deleteuserRequest.type });
+    try {
+        await axios.delete(`${server}/users/${id}`);
+        dispatch({ type: deleteuserSuccess.type, payload: id});
+    } catch (error) {
+        dispatch({ type: deleteuserFail.type});
+    }
+}
+
+export const searchuser = (search: string) => async (dispatch: any) => {
+    dispatch({ type: searchuserRequest.type });
+    try {
+        const response = await axios.get(`${server}/search/${search}`);
+        dispatch({ type: searchuserSuccess.type, payload: response.data});
+    } catch (error) {
+        dispatch({ type: searchuserFail.type});
+    }
+};
+
+export const filterUser = ({ gender = undefined, domain = undefined, availability = undefined}: { gender: any, domain: any, availability: any}) => async (dispatch: any) => {
+    dispatch({ type: filterUserRequest.type });
+    try {
+        const response = await axios.get(`${server}/filter?gender=${gender}&domain=${domain}&availability=${availability}`);
+        dispatch({ type: filterUserSuccess.type, payload: response.data});
+    } catch (error) {
+        dispatch({ type: filterUserFail.type});
+    }
+}
