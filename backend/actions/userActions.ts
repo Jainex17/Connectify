@@ -93,8 +93,6 @@ export const filterUsers = async (req: any, res: any) => {
     }
   
     if (gender !== "undefined") {
-        console.log("why");
-        
       andQuery.gender = { $regex: new RegExp(`^${gender}$`, "i") };
     }
   

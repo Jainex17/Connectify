@@ -17,7 +17,10 @@ app.use(express.urlencoded({ extended: true }));
 dbConnect();
 
 import usersRoute from './routes/usersRoute';
+import teamsRoute from './routes/teamRoute';
+
 app.use('/api/v1', usersRoute);
+app.use('/api/v1', teamsRoute);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
