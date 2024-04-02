@@ -8,6 +8,7 @@ import {
   MenuItem,
   Pagination,
   Select,
+  Skeleton,
   Stack,
   TextField,
 } from "@mui/material";
@@ -18,7 +19,7 @@ import { AppDispatch, RootState } from "../redux/store";
 import { filterUser, getusers, searchuser } from "../redux/actions/userAction";
 
 export const Users = () => {
-  const { users } = useSelector((state: RootState) => state.user);
+  const { users, loading, isupdated } = useSelector((state: RootState) => state.user);
   const dispatch: AppDispatch = useDispatch();
   const [usersValues, setusersValues] = React.useState([] as any);
   const [searchText, setSearchText] = React.useState("" as string);
@@ -34,13 +35,14 @@ export const Users = () => {
 
   useEffect(() => {
     dispatch(getusers({ page }));
-  }, [page]);
+  }, [page, isupdated]);
 
   useEffect(() => {
     setusersValues(users);
   }, [users]);
 
   const searchbtnhandler = () => {
+    if(searchText === "") return dispatch(getusers({ page }));
     dispatch(searchuser(searchText));
   };
 
@@ -103,6 +105,7 @@ export const Users = () => {
               <MenuItem value={"Male"}>Male</MenuItem>
               <MenuItem value={"Female"}>Female</MenuItem>
               <MenuItem value={"Bigender"}>Bigender</MenuItem>
+              <MenuItem value={"Agender"}>Agender</MenuItem>
             </Select>
           </FormControl>
 
@@ -142,6 +145,37 @@ export const Users = () => {
           </FormControl>
         </Box>
 
+        {loading ? (<>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 5,
+            alignItems: "center",
+            height: "50vh",
+          }}
+        >
+          <Skeleton variant="rectangular" width={270} height={300} />
+          <Skeleton variant="rectangular" width={270} height={300} />
+          <Skeleton variant="rectangular" width={270} height={300} />
+          <Skeleton variant="rectangular" width={270} height={300} />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 5,
+            alignItems: "center",
+            height: "50vh",
+          }}
+        >
+          <Skeleton variant="rectangular" width={270} height={300} />
+          <Skeleton variant="rectangular" width={270} height={300} />
+          <Skeleton variant="rectangular" width={270} height={300} />
+          <Skeleton variant="rectangular" width={270} height={300} />
+        </Box>
+        </>) : (<>
+      
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}
@@ -160,10 +194,12 @@ export const Users = () => {
                   gender={user.gender}
                   domain={user.domain}
                   available={user.available}
+                  isupdated={isupdated}
                 />
               </Grid>
             ))}
         </Grid>
+        </>)}
 
         <Stack spacing={2} sx={{ marginTop: 4 }}>
           <Pagination

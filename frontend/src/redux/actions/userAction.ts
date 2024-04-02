@@ -13,6 +13,9 @@ import {
     filterUserRequest,
     filterUserSuccess,
     filterUserFail,
+    updateUserRequest,
+    updateUserSuccess,
+    updateUserFail,
 } from "./actionTypes";
 
 export const getusers = ({page = 1}: {page?: number}) => async (dispatch: any) => {
@@ -52,5 +55,16 @@ export const filterUser = ({ gender = undefined, domain = undefined, availabilit
         dispatch({ type: filterUserSuccess.type, payload: response.data});
     } catch (error) {
         dispatch({ type: filterUserFail.type});
+    }
+}
+
+export const updateUser = (id: number, data: any) => async (dispatch: any) => {
+    dispatch({ type: updateUserRequest.type });
+    try {
+        await axios.put(`${server}/users/${id}`, data);
+        const response = await axios.get(`${server}/users`);
+        dispatch({ type: updateUserSuccess.type, payload: response.data});
+    } catch (error) {
+        dispatch({ type: updateUserFail.type});
     }
 }

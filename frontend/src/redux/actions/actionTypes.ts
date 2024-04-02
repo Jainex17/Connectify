@@ -19,3 +19,7 @@ export const createAction = (type: string) => {
   export const filterUserRequest = createAction('filteruserRequest');
   export const filterUserSuccess = createAction('filteruserSuccess');
   export const filterUserFail = createAction('filteruserFail');
+
+  export const updateUserRequest = createAction('updateUserRequest');
+  export const updateUserSuccess = createAction('updateUserSuccess');
+  export const updateUserFail = createAction('updateUserFail');

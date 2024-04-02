@@ -1,8 +1,9 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { deleteuserFail, deleteuserRequest, deleteuserSuccess, filterUserFail, filterUserRequest, filterUserSuccess, getusersFail, getusersRequest, getusersSuccess, searchuserFail, searchuserRequest, searchuserSuccess } from "../actions/actionTypes";
+import { deleteuserFail, deleteuserRequest, deleteuserSuccess, filterUserFail, filterUserRequest, filterUserSuccess, getusersFail, getusersRequest, getusersSuccess, searchuserFail, searchuserRequest, searchuserSuccess, updateUserFail, updateUserRequest, updateUserSuccess } from "../actions/actionTypes";
 const initialState = {
   users : [],
   loading: true,
+  isupdated: false
 };
 
 export const userReducer = createReducer(initialState, (builder) => {
@@ -47,4 +48,13 @@ export const userReducer = createReducer(initialState, (builder) => {
     .addCase(filterUserFail.type, (state: any) => {
       state.loading = false;
     })
+    .addCase(updateUserRequest.type, (state: any) => {
+      state.isupdated = false;
+    })
+    .addCase(updateUserSuccess.type, (state: any) => {
+      state.isupdated = true;
+    })
+    .addCase(updateUserFail.type, (state: any) => {
+      state.isupdated = false;
+    });
 });

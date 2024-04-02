@@ -3,10 +3,24 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Avatar, Stack } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Radio,
+  RadioGroup,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
-import { deleteuser } from "../redux/actions/userAction";
+import { deleteuser, updateUser } from "../redux/actions/userAction";
+import React, { useEffect } from "react";
 
 interface userSchema {
   id: number;
@@ -17,7 +31,20 @@ interface userSchema {
   avatar: string;
   domain: string;
   available: boolean;
+  isupdated?: boolean;
 }
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function UserCard({
   id,
@@ -28,13 +55,45 @@ export default function UserCard({
   gender,
   domain,
   available,
+  isupdated
 }: userSchema) {
-
   const dispatch: AppDispatch = useDispatch();
 
   const deletebtnhandler = () => {
     dispatch(deleteuser(id));
-  }
+  };
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const [firstNameVal, setFirstNameVal] = React.useState(first_name);
+  const [lastNameVal, setLastNameVal] = React.useState(last_name);
+  const [emailVal, setEmailVal] = React.useState(email);
+  const [genderVal, setGenderVal] = React.useState(gender);
+  const [domainVal, setDomainVal] = React.useState(domain);
+  const [availableVal, setAvailableVal] = React.useState(available);
+
+  const updatebtnhandler = () => {
+    if(firstNameVal === "" || lastNameVal === "" || emailVal === "" || genderVal === "" || domainVal === ""){
+      alert("Please fill all the fields");
+      return;
+    }
+    const updatedUser = {
+      first_name: firstNameVal,
+      last_name: lastNameVal,
+      email: emailVal,
+      gender: genderVal,
+      domain: domainVal,
+      available: availableVal
+    };
+
+    dispatch(updateUser(id, updatedUser));
+  };
+
+  useEffect(() => {
+    setOpen(false);
+  }, [isupdated]);
 
   return (
     <Card sx={{ maxWidth: 245, padding: 1 }}>
@@ -152,40 +211,158 @@ export default function UserCard({
               flexDirection: "row",
             }}
           >
-            {available ? (<>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              >
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-            <span>Available</span>
+            {available ? (
+              <>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>Available</span>
               </>
             ) : (
               <>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-            <span>Not-Available</span>
-            </>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                <span>Not-Available</span>
+              </>
             )}
           </Typography>
         </Stack>
       </CardContent>
       <CardActions sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-        <Button variant="contained" size="small">
+        <Button variant="contained" size="small" onClick={handleOpen}>
           Update
         </Button>
-        <Button variant="outlined" size="small" color="error" onClick={deletebtnhandler}>
+        <Button
+          variant="outlined"
+          size="small"
+          color="error"
+          onClick={deletebtnhandler}
+        >
           Delete
         </Button>
       </CardActions>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        sx={{ backdropFilter: "blur(3px)" }}
+      >
+        <Box sx={style}>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{ textAlign: "center" }}
+          >
+            Update User
+          </Typography>
+
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <FormControl fullWidth sx={{ gap: 2 }}>
+              <TextField
+                id="outlined-basic"
+                label="First Name"
+                variant="outlined"
+                value={firstNameVal}
+                onChange={(e: any) => setFirstNameVal(e.target.value)}
+              />
+              <TextField
+                id="outlined-basic"
+                label="Last Name"
+                variant="outlined"
+                value={lastNameVal}
+                onChange={(e: any) => setLastNameVal(e.target.value)}
+              />
+              <TextField id="outlined-basic" label="Email" variant="outlined"
+                value={emailVal}
+                onChange={(e: any) => setEmailVal(e.target.value)}
+              />
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={genderVal}
+                  label="Age"
+                  onChange={(e: any) => setGenderVal(e.target.value)}
+                >
+                  <MenuItem value={"Male"}>Male</MenuItem>
+                  <MenuItem value={"Female"}>Female</MenuItem>
+                  <MenuItem value={"Bigender"}>Bigender</MenuItem>
+                  <MenuItem value={"Agender"}>Agender</MenuItem>
+                </Select>
+              </FormControl>
+
+              <TextField
+                id="outlined-basic"
+                label="Domain"
+                variant="outlined"
+                value={domainVal}
+                onChange={(e: any) => setDomainVal(e.target.value)}
+              />
+              <FormControl component="fieldset">
+                <RadioGroup
+                  row
+                  aria-label="position"
+                  name="position"
+                  defaultValue="top"
+                  sx={{display: "flex"}}
+                >
+                  <FormControlLabel
+                    value="True"
+                    control={<Radio color="primary" />}
+                    label="Available"
+                    checked={availableVal}
+                    onChange={(e: any) => setAvailableVal(e.target.checked)}
+                  />
+                  <FormControlLabel
+                    value="False"
+                    control={<Radio color="primary" />}
+                    label="Not-Available"
+                    checked={!availableVal}
+                    onChange={(e: any) => setAvailableVal(!e.target.checked)}
+                  />
+                </RadioGroup>
+            </FormControl>
+            </FormControl>
+
+          </Typography>
+
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{ textAlign: "center", mt: 2 }}
+          >
+            <Button variant="contained" onClick={updatebtnhandler}>Update</Button>
+          </Typography>
+        </Box>
+      </Modal>
     </Card>
   );
 }
