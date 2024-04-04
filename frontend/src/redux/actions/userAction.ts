@@ -48,10 +48,10 @@ export const searchuser = (search: string) => async (dispatch: any) => {
     }
 };
 
-export const filterUser = ({ gender = undefined, domain = undefined, availability = undefined}: { gender: any, domain: any, availability: any}) => async (dispatch: any) => {
+export const filterUser = ({ gender, domain, availability}: { gender: any, domain: any, availability: any}) => async (dispatch: any) => {
     dispatch({ type: filterUserRequest.type });
     try {
-        const response = await axios.get(`${server}/filter?gender=${gender}&domain=${domain}&availability=${availability}`);
+        const response = await axios.get(`${server}/filter?gender=${gender}&domain=${domain}&available=${availability}`);
         dispatch({ type: filterUserSuccess.type, payload: response.data});
     } catch (error) {
         dispatch({ type: filterUserFail.type});

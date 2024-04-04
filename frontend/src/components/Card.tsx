@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import {
   Avatar,
   Box,
+  Checkbox,
   FormControl,
   FormControlLabel,
   InputLabel,
@@ -32,6 +33,8 @@ interface userSchema {
   domain: string;
   available: boolean;
   isupdated?: boolean;
+  selectedUsers?: Set<number>;
+  isselected?: boolean;
 }
 
 const style = {
@@ -55,7 +58,9 @@ export default function UserCard({
   gender,
   domain,
   available,
-  isupdated
+  isupdated,
+  selectedUsers,
+  isselected
 }: userSchema) {
   const dispatch: AppDispatch = useDispatch();
 
@@ -73,6 +78,7 @@ export default function UserCard({
   const [genderVal, setGenderVal] = React.useState(gender);
   const [domainVal, setDomainVal] = React.useState(domain);
   const [availableVal, setAvailableVal] = React.useState(available);
+  const [isselectedVal, setIsselectedVal] = React.useState(isselected);
 
   const updatebtnhandler = () => {
     if(firstNameVal === "" || lastNameVal === "" || emailVal === "" || genderVal === "" || domainVal === ""){
@@ -95,8 +101,27 @@ export default function UserCard({
     setOpen(false);
   }, [isupdated]);
 
+  const handleCardClick = () => {
+    if(isselectedVal){
+      selectedUsers?.delete(id);
+    } else{
+      selectedUsers?.add(id);
+    }
+    setIsselectedVal(!isselectedVal);
+
+    console.log(selectedUsers);
+  }
+
+  useEffect(() => {
+    if(selectedUsers?.size === 0){
+      setIsselectedVal(false);
+    }
+  }, [selectedUsers]);
+
+
   return (
-    <Card sx={{ maxWidth: 245, padding: 1 }}>
+    <Card sx={{ maxWidth: 245, padding: 1, cursor: "pointer", backgroundColor: isselectedVal ? "#16002a" : undefined }} onClick={handleCardClick}>
+      <Checkbox checked={isselectedVal} />
       <Avatar
         alt="Remy Sharp"
         src={avatar}

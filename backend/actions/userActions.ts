@@ -88,16 +88,16 @@ export const filterUsers = async (req: any, res: any) => {
     const query: { [key: string]: any } = {};
     const andQuery: { [key: string]: any } = {};
 
-    if (domain !== "undefined") {
+    if (domain !== "default") {
       andQuery.domain = new RegExp(domain, "i");
     }
   
-    if (gender !== "undefined") {
+    if (gender !== "default") {
       andQuery.gender = { $regex: new RegExp(`^${gender}$`, "i") };
     }
   
-    if (available !== "undefined") {
-      query.available = available === "true";
+    if (available !== "default") {      
+      query.available = available === "True";
     }
   
     if (Object.keys(andQuery).length > 0) {

@@ -47,16 +47,27 @@ export const Users = () => {
   };
 
   const handleChangegender = (event: any) => {
-    dispatch(filterUser({ gender: event.target.value, domain: undefined, availability: undefined}));
+    dispatch(filterUser({ gender: event.target.value, domain: "default", availability: "default"}));
     setGender(event.target.value);
   };
   const handleChangedomain = (event: any) => {
-    dispatch(filterUser({ gender: undefined, domain: event.target.value, availability: undefined}));
+    dispatch(filterUser({ gender: "default", domain: event.target.value, availability: "default"}));
     setDomain(event.target.value);
   };
   const handleChangeavailability = (event: any) => {
-    dispatch(filterUser({ gender: undefined, domain: undefined, availability: event.target.value}));
+    dispatch(filterUser({ gender: "default", domain: "default", availability: event.target.value}));
     setAvailability(event.target.value);
+  };
+
+  const [selectedUsers, setSelectedUsers] = React.useState(new Set<number>());
+  
+  const CreareTeamHandle = () => {
+    let team = Array.from(selectedUsers);
+    if(team.length < 2) {
+      alert("Select atleast 2 users to create a team");
+      return;
+    }
+    setSelectedUsers(new Set<number>());
   };
 
   return (
@@ -143,6 +154,14 @@ export const Users = () => {
               <MenuItem value={"False"}>False</MenuItem>
             </Select>
           </FormControl>
+          <Button
+          variant="contained"
+          color="success"
+          sx={{ marginLeft: "auto", padding: 2, marginRight: 4}}
+          onClick={CreareTeamHandle}
+        >
+          Make A Team
+        </Button>
         </Box>
 
         {loading ? (<>
@@ -174,9 +193,9 @@ export const Users = () => {
           <Skeleton variant="rectangular" width={270} height={300} />
           <Skeleton variant="rectangular" width={270} height={300} />
         </Box>
-        </>) : (<>
-      
-        <Grid
+        </>) : (
+        <>
+          <Grid
           container
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
@@ -195,10 +214,12 @@ export const Users = () => {
                   domain={user.domain}
                   available={user.available}
                   isupdated={isupdated}
+                  selectedUsers={selectedUsers}
+                  isselected={selectedUsers.has(user.id)}
                 />
               </Grid>
             ))}
-        </Grid>
+          </Grid>
         </>)}
 
         <Stack spacing={2} sx={{ marginTop: 4 }}>
