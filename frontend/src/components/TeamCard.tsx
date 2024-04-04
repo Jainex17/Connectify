@@ -8,7 +8,6 @@ interface TeamCardProps {
 }
 
 export const TeamCard = ({
-    id,
     name,
     description,
     members
