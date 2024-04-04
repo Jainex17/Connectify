@@ -2,6 +2,8 @@ import { Schema, model, connect } from 'mongoose';
 
 interface teamSchema {
     id: number;
+    name: string;
+    description: string;
     members: number[];
 }
 
