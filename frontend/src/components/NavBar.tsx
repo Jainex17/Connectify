@@ -2,6 +2,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import { Box, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
@@ -32,14 +33,20 @@ function NavBar() {
             })}
           >
             <Typography variant="h6" component="div">
-              Connectify
+              <Link to={"/"} style={{ color: "white", textDecoration: "none" }}>
+                Connectify
+              </Link>
             </Typography>
             <Box sx={{ display: "flex", gap: 5 }}>
               <Typography variant="h6" component="div">
+              <Link to={"/"} style={{ color: "white", textDecoration: "none" }}>
                 Users
+              </Link>
               </Typography>
               <Typography variant="h6" component="div">
+              <Link to={"/teams"} style={{ color: "white", textDecoration: "none" }}>
                 Teams
+              </Link>
               </Typography>
             </Box>
           </Toolbar>

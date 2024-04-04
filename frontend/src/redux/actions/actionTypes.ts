@@ -23,3 +23,7 @@ export const createAction = (type: string) => {
   export const updateUserRequest = createAction('updateUserRequest');
   export const updateUserSuccess = createAction('updateUserSuccess');
   export const updateUserFail = createAction('updateUserFail');
+
+  export const getallteamsRequest = createAction('getallteamsRequest');
+  export const getallteamsSuccess = createAction('getallteamsSuccess');
+  export const getallteamsFail = createAction('getallteamsFail');

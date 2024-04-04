@@ -47,3 +47,12 @@ export const getTeamById = async (req: any, res: any) => {
         res.status(404).json({ message: error.message });
     }
 }
+
+export const getTeams = async (req: any, res: any) => {
+    try {
+        const teams = await Team.find();
+        res.status(200).json(teams);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}

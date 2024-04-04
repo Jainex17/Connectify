@@ -1,11 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit'; 
 import {userReducer} from './reducers/userReducer';
+import { teamReducer } from './reducers/teamReducer';
 
 export const server = import.meta.env.VITE_API_KEY;
 
 const store = configureStore({
     reducer:{
-        user:userReducer,
+        user: userReducer,
+        team: teamReducer
     },
 });
 

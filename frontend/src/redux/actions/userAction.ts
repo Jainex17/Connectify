@@ -68,3 +68,4 @@ export const updateUser = (id: number, data: any) => async (dispatch: any) => {
         dispatch({ type: updateUserFail.type});
     }
 }
+
