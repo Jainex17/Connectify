@@ -37,7 +37,7 @@ interface userSchema {
   isselected?: boolean;
 }
 
-const style = {
+export const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",

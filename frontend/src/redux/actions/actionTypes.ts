@@ -27,3 +27,7 @@ export const createAction = (type: string) => {
   export const getallteamsRequest = createAction('getallteamsRequest');
   export const getallteamsSuccess = createAction('getallteamsSuccess');
   export const getallteamsFail = createAction('getallteamsFail');
+
+  export const createTeamRequest = createAction('createTeamRequest');
+  export const createTeamSuccess = createAction('createTeamSuccess');
+  export const createTeamFail = createAction('createTeamFail');

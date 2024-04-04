@@ -18,7 +18,10 @@ function App() {
         </Routes>
       <Footer />
       </BrowserRouter>
-      <ToastContainer />
+      <ToastContainer
+        theme='dark'
+        position="bottom-right"
+      />
     </>
   )
 }
