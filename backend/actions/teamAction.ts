@@ -54,7 +54,18 @@ export const getTeamById = async (req: any, res: any) => {
 export const getTeams = async (req: any, res: any) => {
     try {
         const teams = await Team.find();
-        res.status(200).json(teams);
+
+        const teamMembers = await User.find({ id: { $in: teams.map((team: any) => team.members).flat() } });
+        const teamMembersMap = new Map();
+        teamMembers.forEach((member: any) => {
+            teamMembersMap.set(member.id, member);
+        });
+        const teamDetails = teams.map((team: any) => {
+            const members = team.members.map((member: any) => teamMembersMap.get(member));
+            return { ...team._doc, members };
+        });
+        res.status(200).json(teamDetails);
+        
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

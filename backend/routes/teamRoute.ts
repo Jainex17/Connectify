@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { createTeam, getAllMembersDetails, getTeamById, getTeams } from '../actions/teamAction';
+import { createTeam, getTeamById, getTeams } from '../actions/teamAction';
 
 const route = express.Router();
 
