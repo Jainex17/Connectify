@@ -109,7 +109,6 @@ export default function UserCard({
     }
     setIsselectedVal(!isselectedVal);
 
-    console.log(selectedUsers);
   }
 
   useEffect(() => {

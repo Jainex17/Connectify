@@ -21,12 +21,13 @@ import { AppDispatch, RootState } from "../redux/store";
 import { filterUser, getusers, searchuser } from "../redux/actions/userAction";
 import { toast } from "react-toastify";
 import { style } from "./Card";
-import { createTeam } from "../redux/actions/teamActions";
+import { createTeam, getallteams } from "../redux/actions/teamActions";
 
 export const Users = () => {
   const { users, loading, isupdated } = useSelector(
     (state: RootState) => state.user
   );
+  const { isTeamCreated = false, error } = useSelector((state: RootState) => state.team);
   const dispatch: AppDispatch = useDispatch();
   const [usersValues, setusersValues] = React.useState([] as any);
   const [searchText, setSearchText] = React.useState("" as string);
@@ -43,6 +44,11 @@ export const Users = () => {
   useEffect(() => {
     dispatch(getusers({ page }));
   }, [page, isupdated]);
+
+
+  useEffect(() => {
+    dispatch(getallteams());
+  }, []);
 
   useEffect(() => {
     setusersValues(users);
@@ -89,7 +95,13 @@ export const Users = () => {
   const [teamName, setTeamName] = React.useState("" as string);
   const [teamdesc, setTeamDesc] = React.useState("" as string);
   const [createTeamOpen, setCreateTeamOpen] = React.useState(false);
-  const handleCreateTeamOpen = () => setCreateTeamOpen(true);
+  const handleCreateTeamOpen = () => {
+    if (selectedUsers.size <= 0) {
+      toast("Select atleast 2 users to create a team");
+      return;
+    }
+    setCreateTeamOpen(true);
+  }
   const handleCreateTeamClose = () => setCreateTeamOpen(false);
 
   const CreareTeamHandle = () => {
@@ -104,7 +116,26 @@ export const Users = () => {
     }
     dispatch(createTeam({ name: teamName, description: teamdesc, members: team }));
     setSelectedUsers(new Set<number>());
+    setCreateTeamOpen(false);
+    setTeamName("");
+    setTeamDesc("");
   };
+
+  useEffect(() => {
+    console.log(isTeamCreated);
+    
+    if (isTeamCreated) {
+      toast.success("Team created successfully");
+      dispatch({ type: "clearSuccessMsg" });
+    }
+  }, [isTeamCreated]);
+
+  useEffect(() => {
+    if(error) {
+      toast.error(error);
+      dispatch({ type: "clearError" });
+    }
+  }, [error]);
 
   return (
     <>
@@ -220,7 +251,7 @@ export const Users = () => {
               Create Team
             </Typography>
 
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <Box id="modal-modal-description" sx={{ mt: 2 }}>
               <FormControl fullWidth sx={{ gap: 2 }}>
                 <TextField
                   id="outlined-basic"
@@ -238,7 +269,7 @@ export const Users = () => {
                   onChange={(e: any) => setTeamDesc(e.target.value)}
                 />
               </FormControl>
-            </Typography>
+            </Box>
 
             <Typography
               id="modal-modal-title"

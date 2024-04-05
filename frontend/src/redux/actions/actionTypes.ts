@@ -31,3 +31,10 @@ export const createAction = (type: string) => {
   export const createTeamRequest = createAction('createTeamRequest');
   export const createTeamSuccess = createAction('createTeamSuccess');
   export const createTeamFail = createAction('createTeamFail');
+
+  export const getTeamMembersDetailsRequest = createAction('getTeamMembersDetailsRequest');
+  export const getTeamMembersDetailsSuccess = createAction('getTeamMembersDetailsSuccess');
+  export const getTeamMembersDetailsFail = createAction('getTeamMembersDetailsFail');
+
+  export const clearError = createAction('clearError');
+  export const clearSuccessMsg = createAction('clearSuccessMsg');

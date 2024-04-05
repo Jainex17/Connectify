@@ -19,6 +19,7 @@ function App() {
       <Footer />
       </BrowserRouter>
       <ToastContainer
+        autoClose={1500}
         theme='dark'
         position="bottom-right"
       />

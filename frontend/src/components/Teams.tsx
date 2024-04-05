@@ -12,8 +12,8 @@ export const Teams = () => {
 
     useEffect(() => {
         dispatch(getallteams());
-    }, [dispatch]);
-
+    }, []);
+    
 return <>
     <Container
         sx={{
@@ -21,7 +21,7 @@ return <>
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            height: "100vh",
+            marginTop: 20,
         }}
     >
         
@@ -35,24 +35,14 @@ return <>
             height: "50vh",
           }}
         >
-          <Skeleton variant="rectangular" width={270} height={300} />
-          <Skeleton variant="rectangular" width={270} height={300} />
-          <Skeleton variant="rectangular" width={270} height={300} />
-          <Skeleton variant="rectangular" width={270} height={300} />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            gap: 5,
-            alignItems: "center",
-            height: "50vh",
-          }}
-        >
-          <Skeleton variant="rectangular" width={270} height={300} />
-          <Skeleton variant="rectangular" width={270} height={300} />
-          <Skeleton variant="rectangular" width={270} height={300} />
-          <Skeleton variant="rectangular" width={270} height={300} />
+          <Grid container spacing={3}>
+            {[0, 1, 2, 3].map((index) => (
+              <Grid item xs={3} key={index}>
+                <Skeleton variant="rectangular" width={210} height={118} />
+                
+              </Grid>
+            ))}
+          </Grid>
         </Box>
         </>) : (
         <>
@@ -63,14 +53,17 @@ return <>
           sx={{ marginTop: 4, display: "flex", justifyContent: "center" }}
         >
           {teams &&
+            teams.length <= 0 ? (
+              <h1>No teams found</h1>
+            ) :
             teams.map((team: any, index: number) => (
               <Grid item xs={3} sm={4} md={3} key={index}>
                 <TeamCard
                   id={team.id}
                   name={team.name}
                   description={team.description}
-                  members={team.members}
-                />
+                  membersdetails={team.members}
+                  />
               </Grid>
             ))}
           </Grid>
