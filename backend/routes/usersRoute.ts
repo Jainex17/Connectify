@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllUsers, createUser, deleteUser, getUser, updateUser, searchUser, filterUsers } from '../actions/userActions';
+import { getAllUsers, createUser, deleteUser, getUser, updateUser, searchUser, filterUsers, getUsersByMultipleIds } from '../actions/userActions';
 
 const route = express.Router();
 
@@ -23,5 +23,8 @@ route.get('/search/:name', searchUser);
 
 // filter users by availability, domain, and gender
 route.get('/filter', filterUsers);
+
+// get users by multiple ids
+route.get('/teamusers', getUsersByMultipleIds);
 
 export default route;

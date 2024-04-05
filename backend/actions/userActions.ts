@@ -113,3 +113,15 @@ export const filterUsers = async (req: any, res: any) => {
         res.status(404).json({ message: error.message });
     };
 };
+
+export const getUsersByMultipleIds = async (req: any, res: any) => {
+    const { ids } = req.body;
+    try {
+        const users = await User.find({
+            id: { $in: ids }
+        });
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
