@@ -3,13 +3,13 @@ import User from "../models/userSchema";
 
 export const createTeam = async (req: any, res: any) => {
     try {
-    const team = req.body;
+    const {name, description, members} = req.body;
     
     // check if members are not in same domain and there availability is true if 2 or more member are in same domain or availability is false then return error
-    const members = await User.find({ id: { $in: team.members } });
+    const teammembers = await User.find({ id: { $in: members } });
     const domainSet = new Set();
     let availability = true;
-    members.forEach((member: any) => {
+    teammembers.forEach((member: any) => {
         if(domainSet.has(member.domain)) {
             return res.status(400).json({ message: 'Members are not allowed to be in the same domain' });
         }
@@ -24,9 +24,9 @@ export const createTeam = async (req: any, res: any) => {
     }
 
     // update user availability to false
-    await User.updateMany({ id: { $in: team.members } }, { available: false });
+    await User.updateMany({ id: { $in: members } }, { available: false });
 
-    const newTeam = new Team(team);
+    const newTeam = new Team({ name, description, members });
     
         await newTeam.save();
         res.status(201).json(newTeam);
