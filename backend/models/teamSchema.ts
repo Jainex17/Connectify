@@ -13,6 +13,14 @@ const TeamSchema = new Schema<teamSchema>({
         required: true,
         unique: true
     },
+    name: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
     members: {
         type: [Number],
         required: true
